@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patient Management System</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+        }
+        header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        header img {
+            width: 100px;
+            height: auto;
+        }
+        h1, h2 {
+            color: #1E90FF; /* Blue */
+        }
+        form {
+            margin-bottom: 20px;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+        input, textarea, button {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        button {
+            background-color: #FFD700; /* Gold */
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #FFC107; /* Darker Gold */
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+        th, td {
+            padding: 12px;
+            text-align: left;
+        }
+        th {
+            background-color: #1E90FF; /* Blue */
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        tr:hover {
+            background-color: #ddd;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <img src="logo.png" alt="DR BOB CLINIC Logo">
+        <h1>DR BOB CLINIC</h1>
+        <p>"Hold tight, your teeth will be screwed, and please think of it positively"</p>
+    </header>
+    <h1>Patient Management System</h1>
+    <form id="patientForm">
+        <label for="name">Name:</label>
+        <input type="text" id="name" required>
+        <label for="civilId">Civil ID:</label>
+        <input type="text" id="civilId" required>
+        <label for="phone">Phone Number:</label>
+        <input type="text" id="phone" required>
+        <button type="submit">Add Patient</button>
+    </form>
+    <h2>Patient List</h2>
+    <table id="patientTable">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Civil ID</th>
+                <th>Phone Number</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+    <h2>Schedule Appointment</h2>
+    <form id="appointmentForm">
+        <label for="appointmentCivilId">Civil ID:</label>
+        <input type="text" id="appointmentCivilId" required>
+        <label for="date">Date:</label>
+        <input type="date" id="date" required>
+        <label for="time">Time:</label>
+        <input type="time" id="time" required>
+        <label for="appointmentNotes">Notes:</label>
+        <textarea id="appointmentNotes" rows="3" cols="30"></textarea>
+        <button type="submit">Schedule Appointment</button>
+    </form>
+    <h2>Upcoming Appointments</h2>
+    <table id="appointmentTable">
+        <thead>
+            <tr>
+                <th>Civil ID</th>
+                <th>Date</th>
+                <th>Time</th>
+                <th>Notes</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+    <h2>Search Patient</h2>
+    <form id="searchForm">
+        <label for="searchCivilId">Civil ID:</label>
+        <input type="text" id="searchCivilId" required>
+        <button type="submit">Search</button>
+    </form>
+    <div id="patientProfile"></div>
+    <script src="script.js"></script>
+</body>
+</html>

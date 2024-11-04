@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patient Information</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+        }
+        header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        header img {
+            width: 100px;
+            height: auto;
+        }
+        h1, h2 {
+            color: #1E90FF; /* Blue */
+        }
+        button {
+            background-color: #FFD700; /* Gold */
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #FFC107; /* Darker Gold */
+        }
+        form {
+            margin-bottom: 20px;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+        textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+        th, td {
+            padding: 12px;
+            text-align: left;
+        }
+        th {
+            background-color: #1E90FF; /* Blue */
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        tr:hover {
+            background-color: #ddd;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <img src="logo.png" alt="DR BOB CLINIC Logo">
+        <h1>DR BOB CLINIC</h1>
+        <p>"Hold tight, your teeth will be screwed, and please think of it positively"</p>
+    </header>
+    <h1>Patient Information</h1>
+    <button onclick="goBack()">Back</button>
+    <div id="patientDetails"></div>
+    <h2>Notes</h2>
+    <form id="notesForm">
+        <textarea id="notes" rows="10" cols="50" placeholder="Enter notes here..."></textarea>
+        <button type="submit">Save Notes</button>
+    </form>
+    <h2>Appointments</h2>
+    <table id="appointmentTable">
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>Time</th>
+                <th>Notes</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+    <script>
+        // Get patient ID from URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const civilId = urlParams.get('id');
+        console.log('Civil ID:', civilId); // Debugging
+
+        function goBack() {
+            if (document.referrer) {
+                window.history.back();
+            } else {
+                window.location.href = 'index.html';
+            }
+        }
+
+        function loadPatientInfo() {
+            const patients = JSON.parse(localStorage.getItem('patients')) || [];
+            console.log('Patients:', patients); // Debugging
+            const patient = patients.find(p => p.civilId === civilId);
+            console.log('Patient:', patient); // Debugging
+            if (patient) {
+                document.getElementById('patientDetails').innerHTML = `
+                    <p>Name: ${patient.name}</p>
+                    <p>Civil ID: ${patient.civilId}</p>
+                    <p>Phone Number: ${patient.phone}</p>
+                `;
+                document.getElementById('notes').value = patient.notes || '';
+            } else {
+                document.getElementById('patientDetails').innerHTML = '<p>Patient not found.</p>';
+            }
+        }
+
+        function loadAppointments() {
+            const appointments = JSON.parse(localStorage.getItem('appointments')) || [];
+            console.log('Appointments:', appointments); // Debugging
+            const table = document.getElementById('appointmentTable').getElementsByTagName('tbody')[0];
+            table.innerHTML = '';
+            appointments.filter(a => a.civilId === civilId).forEach(appointment => {
+                const newRow = table.insertRow();
+                const dateCell = newRow.insertCell(0);
+                const timeCell = newRow.insertCell(1);
+                const notesCell = newRow.insertCell(2);
+                dateCell.textContent = appointment.date;
+                timeCell.textContent = appointment.time;
+                notesCell.textContent = appointment.notes || '';
+            });
+        }
+
+        document.getElementById('notesForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const notes = document.getElementById('notes').value;
+            const patients = JSON.parse(localStorage.getItem('patients')) || [];
+            const patientIndex = patients.findIndex(p => p.civilId === civilId);
+            console.log('Patient Index:', patientIndex); // Debugging
+            if (patientIndex !== -1) {
+                patients[patientIndex].notes = notes;
+                localStorage.setItem('patients', JSON.stringify(patients));
+                alert('Notes saved successfully!');
+            }
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            loadPatientInfo();
+            loadAppointments();
+        });
+    </script>
+</body>
+</html>
